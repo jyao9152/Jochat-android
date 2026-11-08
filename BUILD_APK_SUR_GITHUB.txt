@@ -1,0 +1,30 @@
+JOCHAT — CONSTRUIRE LE FICHIER APK
+
+IMPORTANT
+Ce dossier contient le projet Android Kivy, pas encore un APK installable.
+L'environnement ChatGPT utilisé pour préparer ce paquet ne possède pas Android SDK,
+NDK ni Buildozer, et ne peut donc pas compiler ni tester l'APK directement ici.
+
+METHODE DE CONSTRUCTION AUTOMATIQUE
+1. Connecte-toi à https://github.com/ et crée un nouveau dépôt nommé jochat-android.
+2. Décompresse cette archive sur ton ordinateur.
+3. Envoie TOUS les fichiers et dossiers de jochat_android dans le dépôt GitHub.
+   Le fichier .github/workflows/build-android.yml doit être conservé.
+4. Ouvre l'onglet Actions du dépôt.
+5. Sélectionne « Build Jochat APK », puis « Run workflow » si le lancement
+   automatique après l'envoi n'a pas déjà démarré.
+6. Attends que le travail soit terminé avec une coche verte.
+7. Ouvre l'exécution terminée et télécharge l'élément « Jochat-Android-APK »
+   dans la section Artifacts. Décompresse le ZIP téléchargé : il contient le .apk.
+8. Transfère le fichier APK sur le téléphone Android et ouvre-le pour l'installer.
+   Android peut demander d'autoriser temporairement l'installation depuis cette source.
+
+Le workflow utilise un serveur de compilation GitHub Actions avec plus d'espace disque
+que le PC local. Il construit une version de test (debug), pas une version Play Store.
+
+A NOTER
+- L'APK n'a pas été construit ni testé à ce stade.
+- La messagerie utilise le broker MQTT public broker.hivemq.com en port 1883.
+  Ne considère pas cette version comme une messagerie de production sécurisée.
+- Avant une diffusion publique, il faudra tester l'inscription/connexion, les messages,
+  le chiffrement, les notifications et la compatibilité sur plusieurs téléphones.

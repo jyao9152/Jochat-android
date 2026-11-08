@@ -1,0 +1,13 @@
+JOCHAT v0.2 — interface type WhatsApp (police Inter)
+
+ANDROID : voir BUILD_APK_SUR_GITHUB.txt (APK construit par GitHub Actions).
+PC (en ligne) : dans le dépôt GitHub, Settings > Pages > Source = "GitHub Actions".
+  Le site sera publié à https://<ton-compte>.github.io/jochat-android/
+PC (téléchargeable) : double-clique web/index.html (Chrome/Edge/Firefox). Un seul fichier.
+PC (application Python) : pip install kivy paho-mqtt cryptography ; python main.py
+
+Les 3 versions utilisent le même protocole : elles discutent entre elles
+(même prénom, même code secret).
+
+LIMITES : emojis non affichés dans l'app Kivy (pas de police emoji embarquée, clavier OK
+sur la version web) ; relais MQTT public non sécurisé ; APK non testé ici.
