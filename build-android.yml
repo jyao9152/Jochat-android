@@ -1,0 +1,84 @@
+name: Build Jochat APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Use stable signing key
+        run: |
+          mkdir -p ~/.android
+          cp debug.keystore ~/.android/debug.keystore
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip python3-venv \
+            build-essential autoconf libtool pkg-config zlib1g-dev libncurses-dev \
+            libffi-dev libssl-dev cmake
+
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install buildozer cython
+
+      - name: Build debug APK
+        run: buildozer -v android debug
+
+      - name: Name the APK
+        run: cp bin/*.apk jochat.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jochat-Android-APK
+          path: jochat.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Jochat - dernière version
+          body: Télécharge jochat.apk puis installe-le sur ton téléphone.
+          files: jochat.apk
+          make_latest: true
+
+  pages:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - id: deploy
+        uses: actions/deploy-pages@v4
