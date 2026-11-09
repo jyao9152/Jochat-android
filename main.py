@@ -21,7 +21,7 @@ from cryptography.fernet import Fernet
 
 D = os.path.dirname(os.path.abspath(__file__))
 LabelBase.register("Inter", os.path.join(D, "fonts", "Inter-Regular.otf"),
-                   bold=os.path.join(D, "fonts", "Inter-Bold.otf"))
+                   fn_bold=os.path.join(D, "fonts", "Inter-Bold.otf"))
 VERT, VERT_FONCE, VERT_CLAIR = "#008069", "#075E54", "#25D366"
 FOND, ENVOYE, RECU = "#EFEAE2", "#D9FDD3", "#FFFFFF"
 TEXTE, GRIS, BLEU_TICK = "#111B21", "#667781", "#53BDEB"
