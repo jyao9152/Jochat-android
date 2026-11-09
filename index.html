@@ -39,23 +39,35 @@ dialog h3{margin-bottom:6px}dialog p{font-size:13px;color:var(--s);margin-bottom
 dialog input{width:100%;padding:11px;margin-bottom:10px;border:1px solid var(--line);border-radius:8px;font:15px JI,Inter,system-ui;background:var(--in);color:var(--t)}
 dialog button.ok{width:100%;padding:12px;background:var(--g);color:#fff;border-radius:22px;font-size:15px;font-weight:700}
 #conn{font-size:12px;color:var(--s);padding:6px 16px}
+.tabs{display:flex;border-bottom:1px solid var(--line)}.tabs button{flex:1;padding:12px;background:none;color:var(--s);font-weight:700;font-size:14px;border-bottom:3px solid transparent}.tabs button.on{color:var(--g);border-color:var(--g)}
+#pnl{display:none;background:var(--hd);border-top:1px solid var(--line);max-height:240px;overflow:auto;padding:8px 12px}#pnl .tb{display:flex;gap:8px;margin-bottom:6px}#pnl .tb button{background:none;color:var(--s);font-weight:700;padding:5px 12px;border-radius:14px}#pnl .tb button.on{background:var(--line);color:var(--t)}
+#pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:2px}#pg button{background:none;font-size:26px;padding:4px;border-radius:8px}#pg.st{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}#pg.st button{font-size:54px}#pg button:hover{background:var(--line)}
+.stk{font-size:76px;line-height:1.1;padding:2px 6px}.stk.o{align-self:flex-end}.stk.i{align-self:flex-start}.stk i{display:block;font-style:normal;font-size:11px;color:var(--s);text-align:right}
+.b img{display:block;max-width:100%;max-height:320px;border-radius:6px;margin-bottom:2px}.b audio{width:230px;height:40px;display:block}.send.rc{background:#e53935}
+.ring{border:3px solid var(--g2);padding:2px;background-clip:content-box}
+dialog textarea{width:100%;padding:14px;margin-bottom:10px;border:0;border-radius:8px;font:18px JI,Inter,system-ui;min-height:110px;resize:none;text-align:center;background:#008069;color:#fff}
+.ok2{flex:1;padding:9px;border-radius:18px;background:var(--hd);color:var(--t);font-size:14px}
+#sv{position:fixed;inset:0;background:#000;z-index:9;display:none;flex-direction:column;color:#fff}#spb{display:flex;gap:4px;padding:10px 10px 4px}#spb div{flex:1;height:3px;background:#fff5;border-radius:2px;overflow:hidden}#spb b{display:block;height:100%;background:#fff}
+@keyframes pg{from{width:0}to{width:100%}}#sh{display:flex;justify-content:space-between;align-items:center;padding:4px 16px;font-size:15px}#sc{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}#sc img{max-width:100%;max-height:100%}.stx{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center;font-size:28px;white-space:pre-wrap}
 @media(max-width:760px){#side{width:100%}#main{display:none}#app.chat #side{display:none}#app.chat #main{display:flex}#back{display:block}.b{max-width:88%}#msgs{padding:12px 10px}}
 </style></head><body>
 <div id="app">
-<aside id="side"><div class="hd"><h1>Jochat</h1><button class="ic" id="new" title="Nouvelle discussion">＋</button></div><div id="conn">Connexion…</div><div id="list"></div></aside>
+<aside id="side"><div class="hd"><h1>Jochat</h1><button class="ic" id="new" title="Nouvelle discussion">＋</button></div><div id="conn">Connexion…</div><div class="tabs"><button id="tc" class="on">Discussions</button><button id="ts">Statuts</button></div><div id="list"></div><div id="slist" style="display:none"></div></aside>
 <section id="main">
 <div id="empty"><h2>Jochat pour ordinateur</h2><p>Sélectionne une discussion ou crée-en une avec ＋.<br>Messages chiffrés avec le code secret partagé.</p></div>
 <div id="chat"><div class="hd"><button class="ic" id="back">←</button><div class="av" id="hav" style="width:40px;height:40px;font-size:17px"></div><div style="flex:1"><div id="hn" style="font-size:16px"></div><div id="st"></div></div></div>
-<div id="msgs"></div><form class="bar" id="f"><input id="in" placeholder="Écrivez un message" autocomplete="off"><button class="send" title="Envoyer">➤</button></form></div>
+<div id="msgs"></div><div id="pnl"><div class="tb"><button type="button" data-t="e" class="on">Émojis</button><button type="button" data-t="s">Stickers</button></div><div id="pg"></div></div><form class="bar" id="f"><button type="button" class="ic" id="bem" title="Émojis et stickers">😊</button><button type="button" class="ic" id="bph" title="Photo">📎</button><input id="in" placeholder="Écrivez un message" autocomplete="off"><button type="button" class="ic" id="bcx" style="display:none" title="Annuler">✕</button><button class="send" id="bs" title="Envoyer / vocal">🎤</button></form><input type="file" id="fi" accept="image/*" hidden></div>
 </section></div>
 <dialog id="dn"><form method="dialog" id="fn"><h3>Nouvelle discussion</h3><p>Le même code secret doit être utilisé des deux côtés.</p><input id="n" placeholder="Prénom du contact" required><input id="c" type="password" placeholder="Code secret partagé" required><button class="ok">Créer</button></form></dialog>
 <dialog id="dp"><form method="dialog" id="fp"><h3>Bienvenue sur Jochat</h3><p>Entre ton prénom (le même que chez ton contact).</p><input id="p" placeholder="Ton prénom" required><button class="ok">Continuer</button></form></dialog>
+<dialog id="dst"><form method="dialog" id="fst"><h3>Nouveau statut</h3><p>Visible 24 h par tes contacts.</p><textarea id="stt" placeholder="Écris ton statut…"></textarea><img id="stp" style="display:none;max-width:100%;border-radius:8px;margin-bottom:10px"><div style="display:flex;gap:8px;margin-bottom:10px"><button type="button" class="ok2" id="stc">🎨 Couleur</button><button type="button" class="ok2" id="stf">📷 Photo</button></div><button class="ok">Publier</button></form></dialog>
+<div id="sv"><div id="spb"></div><div id="sh"><span id="sn"></span><button class="ic" id="sx" style="color:#fff">✕</button></div><div id="sc"></div></div>
 <script src="https://cdn.jsdelivr.net/npm/mqtt@5.3.4/dist/mqtt.min.js"></script>
 <script>
 const $=s=>document.querySelector(s),enc=new TextEncoder(),dec=new TextDecoder(),sub=crypto.subtle;
 let D;try{D=JSON.parse(localStorage.getItem('jochat2')||'{}')}catch(e){D={}}
-D.contacts=D.contacts||{};D.client=D.client||crypto.randomUUID().replace(/-/g,'');
-const save=()=>{try{localStorage.setItem('jochat2',JSON.stringify(D))}catch(e){}};
+D.contacts=D.contacts||{};D.stat=D.stat||[];D.client=D.client||crypto.randomUUID().replace(/-/g,'');
+const save=()=>{for(let k=0;k<40;k++){try{localStorage.setItem('jochat2',JSON.stringify(D));return}catch(e){const o=Object.values(D.contacts).flatMap(c=>c.msgs).filter(m=>m.data).sort((a,b)=>a.ts-b.ts)[0];if(o)o.data=null;else{const x=D.stat.sort((a,b)=>a.ts-b.ts)[0];if(!x)return;D.stat.splice(D.stat.indexOf(x),1)}}}};
 const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
 const hm=t=>new Date(t*1000).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
 const COL=['#00A884','#5E47DE','#D6405E','#E5A100','#0085C7','#8B5CF6','#E0662C'];
@@ -84,7 +96,7 @@ const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 function list(){const L=$('#list');L.innerHTML='';
  Object.entries(D.contacts).sort((a,b)=>(b[1].msgs.at(-1)?.ts||0)-(a[1].msgs.at(-1)?.ts||0)).forEach(([id,c])=>{
   const m=c.msgs.at(-1),r=document.createElement('div');r.className='row'+(id===open?' on':'');
-  r.innerHTML=`<div class="av" style="background:${col(c.nom)}">${esc(c.nom[0]||'?').toUpperCase()}</div><div class="mid"><div class="l1"><span class="nm">${esc(c.nom)}</span><span class="tm ${c.non_lus?'u':''}">${m?hm(m.ts):''}</span></div><div class="l2"><span class="pv">${m?(m.moi?'Vous : ':'')+esc(m.texte):'Nouvelle discussion'}</span>${c.non_lus?`<span class="bd">${c.non_lus}</span>`:''}</div></div>`;
+  r.innerHTML=`<div class="av" style="background:${col(c.nom)}">${esc(c.nom[0]||'?').toUpperCase()}</div><div class="mid"><div class="l1"><span class="nm">${esc(c.nom)}</span><span class="tm ${c.non_lus?'u':''}">${m?hm(m.ts):''}</span></div><div class="l2"><span class="pv">${m?(m.moi?'Vous : ':'')+prev(m):'Nouvelle discussion'}</span>${c.non_lus?`<span class="bd">${c.non_lus}</span>`:''}</div></div>`;
   r.onclick=()=>show(id);L.appendChild(r)});
  if(!Object.keys(D.contacts).length)L.innerHTML='<p style="padding:30px;text-align:center;color:var(--s)">Aucune discussion.<br>Clique sur ＋ pour commencer.</p>'}
 function show(id){open=id;const c=D.contacts[id];c.non_lus=0;$('#app').classList.add('chat');$('#empty').style.display='none';$('#chat').style.display='flex';
@@ -92,14 +104,14 @@ function show(id){open=id;const c=D.contacts[id];c.non_lus=0;$('#app').classList
 function render(){if(!open)return;const M=$('#msgs');M.innerHTML='';let day='';
  for(const m of D.contacts[open].msgs){const d=new Date(m.ts*1000).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
   if(d!==day){day=d;M.insertAdjacentHTML('beforeend',`<div class="day">${d}</div>`)}
-  M.insertAdjacentHTML('beforeend',`<div class="b ${m.moi?'o':'i'}">${esc(m.texte)}<i>${hm(m.ts)}${m.moi?tick(m.st||1):''}</i></div>`)}
+  M.insertAdjacentHTML('beforeend',bub(m))}
  M.scrollTop=M.scrollHeight}
 function status(){if(!open)return;const n=Date.now()/1000;$('#st').textContent=n-(ecrit[open]||0)<4?"en train d'écrire…":n-(vu[open]||0)<50?'en ligne':'hors ligne'}
 setInterval(()=>{status();if(cli&&cli.connected&&Math.floor(Date.now()/1000)%20===0)Object.keys(D.contacts).forEach(c=>send(c,{t:'ping'}))},1000);
 $('#back').onclick=()=>{open=null;$('#app').classList.remove('chat');list()};
-$('#f').onsubmit=e=>{e.preventDefault();const t=$('#in').value.trim();if(!open||!t)return;
+$('#f').onsubmit=e=>{e.preventDefault();const t=$('#in').value.trim();if(!open)return;if(!t){micToggle();return}
  const m={id:crypto.randomUUID().slice(0,10),moi:true,texte:t.slice(0,2000),ts:Date.now()/1000,st:1};
- D.contacts[open].msgs.push(m);send(open,{t:'msg',id:m.id,texte:m.texte,ts:m.ts});$('#in').value='';save();render();list()};
+ D.contacts[open].msgs.push(m);send(open,{t:'msg',id:m.id,texte:m.texte,ts:m.ts});$('#in').value='';upd();save();render();list()};
 $('#in').oninput=()=>{if(open&&Date.now()-last>3000){last=Date.now();send(open,{t:'ecrit'})}};
 $('#new').onclick=()=>$('#dn').showModal();
 $('#fn').onsubmit=async()=>{const f=$('#n').value.trim(),code=$('#c').value;if(!f||!code)return;
@@ -116,9 +128,72 @@ function connect(){cli=mqtt.connect('wss://broker.hivemq.com:8884/mqtt',{clientI
   const c=D.contacts[cid];if(p.de===norm(D.nom||''))return;vu[cid]=Date.now()/1000;
   if(p.t==='ecrit')ecrit[cid]=Date.now()/1000;
   else if(p.t==='msg'){if(c.msgs.some(m=>m.id===p.id))return;c.msgs.push({id:p.id,moi:false,texte:p.texte,ts:p.ts,st:3});send(cid,{t:'recu',id:p.id});if(cid===open)send(cid,{t:'lu'});else c.non_lus=(c.non_lus||0)+1}
-  else if(p.t==='recu')c.msgs.forEach(m=>{if(m.id===p.id&&(m.st||1)<2)m.st=2});
+  else if(p.t==='med')recvMed(cid,c,p);else if(p.t==='stat')recvStat(cid,c,p);else if(p.t==='recu')c.msgs.forEach(m=>{if(m.id===p.id&&(m.st||1)<2)m.st=2});
   else if(p.t==='lu')c.msgs.forEach(m=>{if(m.moi)m.st=3});
   save();render();list()})}
+// ---- v3 : médias, stickers, statuts ----
+const EMO='😀 😂 🤣 😊 😍 🥰 😘 😎 🤔 😅 😉 😢 😭 😡 🥳 😴 🤗 🙄 😱 🤯 👍 👎 👏 🙌 🙏 💪 👋 🤝 ✌️ 👌 ❤️ 🧡 💛 💚 💙 💜 🖤 💔 🔥 ✨ 🎉 💯 ⭐ 🌹 🎂 🎁 ☕ 🍕 🍔 ⚽ 🎵 📸 🚀 🌍 ☀️ 🌙'.split(' ');
+const STK='🥳 😍 😂 😭 😡 🤯 🥰 😎 🙏 👍 💪 🔥 🎉 💯 ❤️ 🤝 🐱 🐶 🦁 🐼 🦄 🍕 🎂 ⚽'.split(' ');
+const BGS=['#008069','#5E47DE','#D6405E','#E5A100','#0085C7','#8B5CF6'];
+const q=s=>esc(s).replace(/"/g,'&quot;');
+function prev(m){return m.kind==='img'?'📷 Photo':m.kind==='voc'?'🎤 Message vocal':m.kind==='stk'?esc(m.data||'')+' Sticker':esc(m.texte||'')}
+function bub(m){const c=m.moi?'o':'i',meta=`<i>${hm(m.ts)}${m.moi?tick(m.st||1):''}</i>`;
+ if(m.kind==='stk')return `<div class="stk ${c}">${esc(m.data)}${meta}</div>`;
+ if(m.kind==='img')return `<div class="b ${c}">${m.data?`<img src="${m.data}">`:'📷 Photo expirée'}${meta}</div>`;
+ if(m.kind==='voc')return `<div class="b ${c}">${m.data?`<audio controls src="${m.data}"></audio>`:'🎤 Vocal expiré'}${meta}</div>`;
+ return `<div class="b ${c}">${esc(m.texte)}${meta}</div>`}
+function sendMed(kind,data,dur){if(!open)return;const m={id:crypto.randomUUID().slice(0,10),moi:true,kind,data,dur,ts:Date.now()/1000,st:1};
+ D.contacts[open].msgs.push(m);send(open,{t:'med',id:m.id,kind,data,dur,ts:m.ts});save();render();list()}
+function recvMed(cid,c,p){if(c.msgs.some(m=>m.id===p.id))return;c.msgs.push({id:p.id,moi:false,kind:p.kind,data:p.data,dur:p.dur,ts:p.ts,st:3});send(cid,{t:'recu',id:p.id});if(cid===open)send(cid,{t:'lu'});else c.non_lus=(c.non_lus||0)+1}
+let pt='e',fi_mode='chat';
+function upd(){$('#bs').textContent=$('#in').value.trim()?'➤':'🎤'}$('#in').addEventListener('input',upd);
+function panel(){const g=$('#pg');g.className=pt==='s'?'st':'';g.innerHTML=(pt==='s'?STK:EMO).map(e=>`<button type="button">${e}</button>`).join('');
+ g.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(pt==='s'){sendMed('stk',b.textContent);$('#pnl').style.display='none'}else{const i=$('#in');i.value+=b.textContent;i.focus();upd()}};
+ document.querySelectorAll('#pnl .tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===pt))}
+$('#bem').onclick=()=>{const p=$('#pnl');p.style.display=p.style.display==='block'?'none':'block';panel()};
+document.querySelectorAll('#pnl .tb button').forEach(b=>b.onclick=()=>{pt=b.dataset.t;panel()});
+function shrink(file,max=800){return new Promise(res=>{const im=new Image();im.onload=()=>{let s=Math.min(1,max/Math.max(im.width,im.height)),qy=.7,u;const cv=document.createElement('canvas');
+ do{cv.width=Math.round(im.width*s);cv.height=Math.round(im.height*s);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);u=cv.toDataURL('image/jpeg',qy);qy-=.1;s*=.9}while(u.length>110000&&qy>.2);res(u)};im.src=URL.createObjectURL(file)})}
+$('#bph').onclick=()=>{if(open){fi_mode='chat';$('#fi').click()}};
+$('#fi').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const u=await shrink(f);if(fi_mode==='chat')sendMed('img',u);else{stDraft=u;$('#stp').src=u;$('#stp').style.display='block'}};
+let rec,chunks,tmr,t0;
+async function micToggle(){if(rec&&rec.state==='recording'){rec.stop();return}
+ try{const st=await navigator.mediaDevices.getUserMedia({audio:true});const mt=['audio/webm;codecs=opus','audio/mp4'].find(t=>MediaRecorder.isTypeSupported(t));
+ rec=new MediaRecorder(st,{mimeType:mt,audioBitsPerSecond:16000});chunks=[];rec.cancel=false;t0=Date.now();
+ rec.ondataavailable=e=>chunks.push(e.data);
+ rec.onstop=()=>{st.getTracks().forEach(t=>t.stop());clearInterval(tmr);$('#in').placeholder='Écrivez un message';$('#bcx').style.display='none';$('#bs').classList.remove('rc');if(rec.cancel)return;
+  const dur=Math.round((Date.now()-t0)/1000),r=new FileReader();r.onload=()=>sendMed('voc',r.result,dur);r.readAsDataURL(new Blob(chunks,{type:mt}))};
+ rec.start();$('#bcx').style.display='block';$('#bs').classList.add('rc');
+ tmr=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);$('#in').placeholder='● Enregistrement '+s+'s — clique 🎤 pour envoyer';if(s>=30)rec.stop()},500)}
+ catch(e){alert('Micro non autorisé ou indisponible.')}}
+$('#bcx').onclick=()=>{if(rec){rec.cancel=true;rec.stop()}};
+// statuts 24 h
+let tab='c',stDraft=null,stBg=0,vl,vi,vt;
+function tabs(t){tab=t;$('#tc').classList.toggle('on',t==='c');$('#ts').classList.toggle('on',t==='s');$('#list').style.display=t==='c'?'block':'none';$('#slist').style.display=t==='s'?'block':'none';if(t==='s')slist()}
+$('#tc').onclick=()=>tabs('c');$('#ts').onclick=()=>tabs('s');
+function purge(){const n=Date.now()/1000-86400;D.stat=D.stat.filter(s=>s.ts>n)}
+function slist(){purge();const L=$('#slist'),mine=D.stat.filter(s=>s.mine),by={};
+ D.stat.filter(s=>!s.mine).forEach(s=>(by[s.de]=by[s.de]||[]).push(s));
+ const av=(n,r)=>`<div class="av ${r?'ring':''}" style="background:${col(n)}">${esc(n[0]||'?').toUpperCase()}</div>`;
+ L.innerHTML=`<div class="row" id="sm">${av(D.nom||'?',mine.length)}<div class="mid"><span class="nm">Mon statut</span><span class="pv">${mine.length?mine.length+' statut(s) · disparaît après 24 h':'Touche pour ajouter un statut'}</span></div>${mine.length?'<button class="ic" id="sa" title="Ajouter">＋</button>':''}</div><p style="padding:10px 16px;font-size:13px;color:var(--s)">Mises à jour récentes</p>`+Object.entries(by).map(([n,a])=>`<div class="row" data-n="${q(n)}">${av(n,1)}<div class="mid"><span class="nm">${esc(n)}</span><span class="pv">${hm(a.at(-1).ts)} · ${a.length} statut(s)</span></div></div>`).join('');
+ $('#sm').onclick=e=>{if(mine.length&&!e.target.closest('#sa'))view(mine);else stNew()};const sa=$('#sa');if(sa)sa.onclick=e=>{e.stopPropagation();stNew()};
+ L.querySelectorAll('[data-n]').forEach(r=>r.onclick=()=>view(by[r.dataset.n]))}
+function stNew(){stDraft=null;stBg=0;$('#stp').style.display='none';$('#stt').value='';$('#stt').style.background=BGS[0];$('#dst').showModal()}
+$('#stc').onclick=()=>{stBg=(stBg+1)%BGS.length;$('#stt').style.background=BGS[stBg]};
+$('#stf').onclick=()=>{fi_mode='stat';$('#fi').click()};
+$('#fst').onsubmit=()=>{const t=$('#stt').value.trim();if(!t&&!stDraft)return;
+ const s={id:crypto.randomUUID().slice(0,10),kind:stDraft?'img':'txt',data:stDraft||t,bg:BGS[stBg],ts:Date.now()/1000};
+ D.stat.push({...s,mine:true,de:D.nom});Object.keys(D.contacts).forEach(c=>send(c,{t:'stat',...s}));save();slist()};
+function recvStat(cid,c,p){if(D.stat.some(s=>s.id===p.id))return;D.stat.push({id:p.id,kind:p.kind,data:p.data,bg:p.bg,ts:p.ts,de:c.nom});if(tab==='s')slist()}
+function view(a){vl=a;vi=0;$('#sv').style.display='flex';show1()}
+function show1(){clearTimeout(vt);if(vi>=vl.length)return closeV();if(vi<0)vi=0;const s=vl[vi];
+ $('#spb').innerHTML=vl.map((_,k)=>`<div><b style="width:${k<vi?100:0}%;${k===vi?'animation:pg 5s linear forwards':''}"></b></div>`).join('');
+ $('#sn').textContent=(s.mine?'Mon statut':s.de)+' · '+hm(s.ts);
+ $('#sc').innerHTML=s.kind==='img'?`<img src="${s.data}">`:`<div class="stx" style="background:${s.bg}">${esc(s.data)}</div>`;
+ vt=setTimeout(()=>{vi++;show1()},5000)}
+function closeV(){clearTimeout(vt);$('#sv').style.display='none'}
+$('#sx').onclick=closeV;$('#sc').onclick=e=>{vi+=e.clientX<innerWidth/2?-1:1;show1()};
+purge();setInterval(()=>{purge();if(tab==='s')slist()},60000);
 list();if(!D.nom)$('#dp').showModal();
 if(window.mqtt)connect();else $('#conn').textContent='Hors connexion (librairie MQTT non chargée)';
 </script></body></html>
