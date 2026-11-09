@@ -25,6 +25,20 @@ class ErreurApp(App):
 
 def lancer():
     try:
+        from kivy.base import ExceptionHandler, ExceptionManager
+
+        class Garde(ExceptionHandler):
+            def handle_exception(self, inst):
+                try:
+                    import jochat_app
+                    jochat_app.signaler("".join(traceback.format_exception(type(inst), inst, inst.__traceback__)))
+                except Exception:
+                    pass
+                return ExceptionManager.PASS
+        ExceptionManager.add_handler(Garde())
+    except Exception:
+        pass
+    try:
         import jochat_app
         jochat_app.JochatAndroid().run()
     except Exception:

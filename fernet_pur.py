@@ -26,6 +26,8 @@ def _sbox():
     return S
 
 S = _sbox()
+X2 = [_xt(i) for i in range(256)]
+M9, M11, M13, M14 = ([_mul(i, k) for i in range(256)] for k in (9, 11, 13, 14))
 IS = [0] * 256
 for _i, _v in enumerate(S): IS[_v] = _i
 
@@ -48,10 +50,10 @@ class AES128:
                 m = []
                 for c in range(4):
                     a = s[c * 4:c * 4 + 4]
-                    m += [_xt(a[0]) ^ _xt(a[1]) ^ a[1] ^ a[2] ^ a[3],
-                          a[0] ^ _xt(a[1]) ^ _xt(a[2]) ^ a[2] ^ a[3],
-                          a[0] ^ a[1] ^ _xt(a[2]) ^ _xt(a[3]) ^ a[3],
-                          _xt(a[0]) ^ a[0] ^ a[1] ^ a[2] ^ _xt(a[3])]
+                    m += [X2[a[0]] ^ X2[a[1]] ^ a[1] ^ a[2] ^ a[3],
+                          a[0] ^ X2[a[1]] ^ X2[a[2]] ^ a[2] ^ a[3],
+                          a[0] ^ a[1] ^ X2[a[2]] ^ X2[a[3]] ^ a[3],
+                          X2[a[0]] ^ a[0] ^ a[1] ^ a[2] ^ X2[a[3]]]
                 s = m
             s = [s[i] ^ self.rk[r][i] for i in range(16)]
         return bytes(s)
@@ -66,10 +68,10 @@ class AES128:
                 m = []
                 for c in range(4):
                     a = s[c * 4:c * 4 + 4]
-                    m += [_mul(a[0], 14) ^ _mul(a[1], 11) ^ _mul(a[2], 13) ^ _mul(a[3], 9),
-                          _mul(a[0], 9) ^ _mul(a[1], 14) ^ _mul(a[2], 11) ^ _mul(a[3], 13),
-                          _mul(a[0], 13) ^ _mul(a[1], 9) ^ _mul(a[2], 14) ^ _mul(a[3], 11),
-                          _mul(a[0], 11) ^ _mul(a[1], 13) ^ _mul(a[2], 9) ^ _mul(a[3], 14)]
+                    m += [M14[a[0]] ^ M11[a[1]] ^ M13[a[2]] ^ M9[a[3]],
+                          M9[a[0]] ^ M14[a[1]] ^ M11[a[2]] ^ M13[a[3]],
+                          M13[a[0]] ^ M9[a[1]] ^ M14[a[2]] ^ M11[a[3]],
+                          M11[a[0]] ^ M13[a[1]] ^ M9[a[2]] ^ M14[a[3]]]
                 s = m
         return bytes(s)
 
